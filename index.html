@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Quiet Confession 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:radial-gradient(circle at center,#1a0f14,#000);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Georgia,serif;
+  color:#f5d7e3;
+  overflow:hidden;
+}
+
+.card{
+  background:rgba(0,0,0,.6);
+  border-radius:20px;
+  padding:40px 25px;
+  width:90%;
+  max-width:420px;
+  text-align:center;
+  position:relative;
+  box-shadow:0 0 40px rgba(255,150,180,.15);
+}
+
+/* candle glow */
+.card::before{
+  content:"";
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:120px;
+  height:120px;
+  background:radial-gradient(circle,rgba(255,180,120,.5),transparent 70%);
+  animation:flicker 2.5s infinite;
+}
+
+@keyframes flicker{
+  0%{opacity:.6}
+  50%{opacity:1}
+  100%{opacity:.7}
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.text{
+  font-size:17px;
+  line-height:1.9;
+  margin-bottom:25px;
+}
+
+.romantic-line{
+  font-size:18px;
+  font-style:italic;
+  color:#ffd6e8;
+  min-height:60px;
+  margin:25px 0;
+}
+
+button{
+  background:linear-gradient(135deg,#ff9ebc,#ffb7d5);
+  color:#000;
+  border:none;
+  border-radius:30px;
+  padding:12px 28px;
+  font-size:16px;
+  cursor:pointer;
+  margin:5px;
+}
+
+#noBtn{
+  position:absolute;
+  background:transparent;
+  border:1px solid #ff9ebc;
+  color:#ff9ebc;
+  padding:10px 22px;
+  border-radius:30px;
+}
+
+.soft-exit{
+  margin-top:18px;
+  font-size:14px;
+  opacity:.6;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎶 AUDIO (hidden) -->
+<audio id="bgMusic" loop>
+  <source src="samjhawan.mp3.mpeg" type="audio/mpeg">
+</audio>
+
+<div class="card">
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <h2>🕯️ A Quiet Confession</h2>
+    <p class="text">
+      Some feelings grow slowly…<br>
+      and quietly become everything 🤍
+    </p>
+    <button onclick="startExperience()">Continue 🤍</button>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <p class="text">
+      I’m not here with pressure.<br>
+      Just honesty.
+    </p>
+    <button onclick="nextPage()">Listen 🕯️</button>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page3">
+    <p class="romantic-line" id="loveLine"></p>
+    <button onclick="yesClicked()">Yes 🤍</button>
+    <button id="noBtn">No 😅</button>
+    <div class="soft-exit">Take your time 🌙</div>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="page" id="page4">
+    <h2>🤍</h2>
+    <p class="text">
+      Thank you for choosing this moment.
+    </p>
+  </div>
+
+</div>
+
+<script>
+let page = 1;
+const music = document.getElementById("bgMusic");
+
+/* START MUSIC AFTER FIRST CLICK */
+function startExperience(){
+  music.volume = 0;
+  music.play();
+  fadeInMusic();
+  nextPage();
+}
+
+function fadeInMusic(){
+  let v = 0;
+  const fade = setInterval(()=>{
+    if(v < 1){
+      v += 0.05;
+      music.volume = v;
+    } else {
+      clearInterval(fade);
+    }
+  },200);
+}
+
+function nextPage(){
+  document.getElementById("page"+page).classList.remove("active");
+  page++;
+  document.getElementById("page"+page).classList.add("active");
+  if(page === 3) typeLine();
+}
+
+function yesClicked(){
+  document.getElementById("page3").classList.remove("active");
+  document.getElementById("page4").classList.add("active");
+}
+
+/* TYPEWRITER */
+const text = "I don’t want a perfect story, I just want one that includes you.";
+let i = 0;
+function typeLine(){
+  if(i < text.length){
+    document.getElementById("loveLine").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeLine, 60);
+  }
+}
+
+/* NO BUTTON RUNS AWAY */
+const noBtn = document.getElementById("noBtn");
+const card = document.querySelector(".card");
+
+noBtn.addEventListener("mouseenter", ()=>{
+  const r = card.getBoundingClientRect();
+  noBtn.style.left = Math.random()*(r.width-100)+"px";
+  noBtn.style.top  = Math.random()*(r.height-80)+"px";
+});
+</script>
+
+</body>
+</html>
